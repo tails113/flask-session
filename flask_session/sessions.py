@@ -160,6 +160,7 @@ class RedisSessionInterface(SessionInterface):
 
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)
+        samesite = self.get_cookie_samesite(app)
         expires = self.get_expiration_time(app, session)
         val = self.serializer.dumps(dict(session))
         self.redis.setex(name=self.key_prefix + session.sid, value=val,
@@ -170,7 +171,8 @@ class RedisSessionInterface(SessionInterface):
             session_id = session.sid
         response.set_cookie(app.session_cookie_name, session_id,
                             expires=expires, httponly=httponly,
-                            domain=domain, path=path, secure=secure)
+                            domain=domain, path=path, secure=secure,
+                            samesite=samesite)
 
 
 class MemcachedSessionInterface(SessionInterface):
@@ -274,6 +276,7 @@ class MemcachedSessionInterface(SessionInterface):
 
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)
+        samesite = self.get_cookie_samesite(app)
         expires = self.get_expiration_time(app, session)
         if not PY2:
             val = self.serializer.dumps(dict(session), 0)
@@ -287,7 +290,8 @@ class MemcachedSessionInterface(SessionInterface):
             session_id = session.sid
         response.set_cookie(app.session_cookie_name, session_id,
                             expires=expires, httponly=httponly,
-                            domain=domain, path=path, secure=secure)
+                            domain=domain, path=path, secure=secure,
+                            samesite=samesite)
 
 
 class FileSystemSessionInterface(SessionInterface):
@@ -348,6 +352,7 @@ class FileSystemSessionInterface(SessionInterface):
 
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)
+        samesite = self.get_cookie_samesite(app)
         expires = self.get_expiration_time(app, session)
         data = dict(session)
         self.cache.set(self.key_prefix + session.sid, data,
@@ -358,7 +363,8 @@ class FileSystemSessionInterface(SessionInterface):
             session_id = session.sid
         response.set_cookie(app.session_cookie_name, session_id,
                             expires=expires, httponly=httponly,
-                            domain=domain, path=path, secure=secure)
+                            domain=domain, path=path, secure=secure,
+                            samesite=samesite)
 
 
 class MongoDBSessionInterface(SessionInterface):
@@ -433,6 +439,7 @@ class MongoDBSessionInterface(SessionInterface):
 
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)
+        samesite = self.get_cookie_samesite(app)
         expires = self.get_expiration_time(app, session)
         val = self.serializer.dumps(dict(session))
         self.store.update({'id': store_id},
@@ -445,7 +452,8 @@ class MongoDBSessionInterface(SessionInterface):
             session_id = session.sid
         response.set_cookie(app.session_cookie_name, session_id,
                             expires=expires, httponly=httponly,
-                            domain=domain, path=path, secure=secure)
+                            domain=domain, path=path, secure=secure,
+                            samesite=samesite)
 
 
 class SqlAlchemySessionInterface(SessionInterface):
@@ -543,6 +551,7 @@ class SqlAlchemySessionInterface(SessionInterface):
 
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)
+        samesite = self.get_cookie_samesite(app)
         expires = self.get_expiration_time(app, session)
         val = self.serializer.dumps(dict(session))
         if saved_session:
@@ -559,4 +568,5 @@ class SqlAlchemySessionInterface(SessionInterface):
             session_id = session.sid
         response.set_cookie(app.session_cookie_name, session_id,
                             expires=expires, httponly=httponly,
-                            domain=domain, path=path, secure=secure)
+                            domain=domain, path=path, secure=secure,
+                            samesite=samesite)
